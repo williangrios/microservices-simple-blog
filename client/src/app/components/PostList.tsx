@@ -8,10 +8,8 @@ function PostList() {
   const [posts, setPosts] = useState<PostProps[]>([])
 
   const fetchPosts = async () => {
-    const response = await fetch('http://localhost:4000/posts')
+    const response = await fetch('http://localhost:4002/posts')
     const data = await response.json()
-    console.log('data', data)
-
     setPosts(data)
   }
 
@@ -26,11 +24,11 @@ function PostList() {
         return (
           <div
             className="p-4 rounded-lg border-gray-600 border-2 w-[400px]"
-            key={post.postId}
+            key={post.id}
           >
             <h3 className="">{post.title}</h3>
-            <CommentList postId={post.postId} />
-            <CommentCreate postId={post.postId} />
+            <CommentList postId={post.id} />
+            <CommentCreate postId={post.id} />
           </div>
         )
       })}
