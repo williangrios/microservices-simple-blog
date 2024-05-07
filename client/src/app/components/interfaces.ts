@@ -1,5 +1,5 @@
 export interface PostProps {
-  postId: string
+  id: string
   title: string
 }
 
