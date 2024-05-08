@@ -7,7 +7,6 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center p-24">
       <h1 className="">Create post</h1>
       <PostCreate />
-      <h1 className="">Posts</h1>
       <PostList />
     </main>
   )
