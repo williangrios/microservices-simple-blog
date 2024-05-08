@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import express, { Request, Response } from 'express'
 import { randomBytes } from 'crypto'
 import cors from 'cors'
+import axios from 'axios'
 
 const app = express()
 app.use(bodyParser.json())
@@ -13,28 +14,7 @@ interface CommentProps {
   content: string
 }
 
-const comments: CommentProps[] = [
-  {
-    postId: '923789d23h',
-    commentId: '923789d233',
-    content: 'comentario do post 1',
-  },
-  {
-    postId: '923729d23h',
-    commentId: '923789d23x',
-    content: 'comentario do post 2',
-  },
-  {
-    postId: '923749d23h',
-    commentId: '923789d23a',
-    content: 'comentario do post 3',
-  },
-  {
-    postId: '923749d23h',
-    commentId: '923789d23u',
-    content: 'comentario do post 3',
-  },
-]
+const comments: CommentProps[] = []
 
 app.get('/posts/:id/comments', (req: Request, res: Response) => {
   const postId = req.params.id
@@ -42,7 +22,7 @@ app.get('/posts/:id/comments', (req: Request, res: Response) => {
   res.send(commentsById)
 })
 
-app.post('/posts/:id/comments', (req: Request, res: Response) => {
+app.post('/posts/:id/comments', async (req: Request, res: Response) => {
   const commentId = randomBytes(4).toString('hex')
   const postId = req.params.id
   const { content } = req.body
@@ -52,9 +32,17 @@ app.post('/posts/:id/comments', (req: Request, res: Response) => {
     postId,
   }
   comments.push(newComment)
+  // post to event bus
+  await axios.post('http://localhost:4003/events', {
+    type: 'CommentCreated',
+    data: newComment,
+  })
   res.status(201).send(newComment)
 })
 
-app.listen(4001, () => {
-  console.log('Comments service Listen on port 4001')
+app.post('/events', async (req: Request, res: Response) => {})
+
+const PORT = 4001
+app.listen(PORT, () => {
+  console.log('Comment Service runnning on port ', PORT)
 })

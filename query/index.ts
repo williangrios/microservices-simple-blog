@@ -20,14 +20,11 @@ interface CommentQueryProps {
 const posts: PostsQueryProps[] = []
 
 app.get('/posts', async (req: Request, res: Response) => {
-  console.log('vai devolver isso', posts)
-
   res.status(200).send(posts)
 })
 
 app.post('/events', async (req: Request, res: Response) => {
   const { type, data } = req.body
-  console.log('entrou no registro query', type, posts)
   if (type === 'PostCreated') {
     const { postId, title } = data
     const newPost: PostsQueryProps = {
@@ -39,9 +36,10 @@ app.post('/events', async (req: Request, res: Response) => {
   }
 
   if (type === 'CommentCreated') {
-    const { id, content, postId } = data
+    const { commentId, content, postId } = data
+
     const newComment: CommentQueryProps = {
-      commentId: id,
+      commentId,
       content,
     }
 
@@ -52,7 +50,6 @@ app.post('/events', async (req: Request, res: Response) => {
       console.log(`Post with ID ${postId} not found.`)
     }
   }
-  console.log('registro query atualizado', posts)
 })
 
 const PORT = 4002

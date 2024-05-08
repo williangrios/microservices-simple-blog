@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import { randomBytes } from 'crypto'
 import cors from 'cors'
+import axios from 'axios'
 
 const app = express()
 app.use(bodyParser.json())
@@ -31,7 +32,7 @@ app.get('/posts', (req: Request, res: Response) => {
   res.send(posts)
 })
 
-app.post('/posts', (req: Request, res: Response) => {
+app.post('/posts', async (req: Request, res: Response) => {
   const postId = randomBytes(4).toString('hex')
   const { title } = req.body
   const newPost: PostProps = {
@@ -39,9 +40,17 @@ app.post('/posts', (req: Request, res: Response) => {
     title,
   }
   posts.push(newPost)
+  // post to event bus
+  await axios.post('http://localhost:4003/events', {
+    type: 'PostCreated',
+    data: newPost,
+  })
   res.status(201).send(newPost)
 })
 
-app.listen(4000, () => {
-  console.log('Posts Service Listing on 4000')
+app.post('/events', async (req: Request, res: Response) => {})
+
+const PORT = 4000
+app.listen(PORT, () => {
+  console.log('Post Service runnning on port ', PORT)
 })

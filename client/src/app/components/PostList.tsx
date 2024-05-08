@@ -27,7 +27,7 @@ function PostList() {
             key={post.id}
           >
             <h3 className="">{post.title}</h3>
-            <CommentList postId={post.id} />
+            <CommentList comments={post.comments} />
             <CommentCreate postId={post.id} />
           </div>
         )

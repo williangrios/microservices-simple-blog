@@ -1,28 +1,12 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { CommentProps } from './interfaces'
 
 interface CommentListProps {
-  postId: string
+  comments: CommentProps[]
 }
 
-function CommentList({ postId }: CommentListProps) {
-  const [comments, setComments] = useState<CommentProps[]>([])
-
-  const fetchComments = async () => {
-    const response = await fetch(
-      `http://localhost:4001/posts/${postId}/comments`
-    )
-    const data = await response.json()
-    console.log('resposta', data)
-
-    setComments(data)
-  }
-
-  useEffect(() => {
-    fetchComments()
-  }, [])
-
+function CommentList({ comments }: CommentListProps) {
   return (
     <div>
       <ul className="">
