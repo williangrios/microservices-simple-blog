@@ -13,7 +13,11 @@ function CommentList({ comments }: CommentListProps) {
         {comments?.map((comment) => {
           return (
             <li key={comment.commentId} className="ml-4">
-              -- {comment.content}
+              {comment.status === 'approved'
+                ? comment.content
+                : comment.status === 'pending'
+                ? 'This comment is awaiting moderation'
+                : 'This comment has been rejected'}
             </li>
           )
         })}

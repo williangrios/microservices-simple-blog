@@ -24,11 +24,11 @@ function PostList() {
         return (
           <div
             className="p-4 rounded-lg border-gray-600 border-2 w-[400px]"
-            key={post.id}
+            key={post.postId}
           >
             <h3 className="">{post.title}</h3>
             <CommentList comments={post.comments} />
-            <CommentCreate postId={post.id} />
+            <CommentCreate postId={post.postId} />
           </div>
         )
       })}

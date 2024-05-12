@@ -1,3 +1,4 @@
+// 4000
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import { randomBytes } from 'crypto'
@@ -13,20 +14,7 @@ interface PostProps {
   title: string
 }
 
-const posts: PostProps[] = [
-  {
-    postId: '923789d23h',
-    title: 'post 1',
-  },
-  {
-    postId: '923729d23h',
-    title: 'post 2',
-  },
-  {
-    postId: '923749d23h',
-    title: 'post 3',
-  },
-]
+const posts: PostProps[] = []
 
 app.get('/posts', (req: Request, res: Response) => {
   res.send(posts)
@@ -41,7 +29,7 @@ app.post('/posts', async (req: Request, res: Response) => {
   }
   posts.push(newPost)
   // post to event bus
-  await axios.post('http://localhost:4003/events', {
+  await axios.post('http://localhost:4005/events', {
     type: 'PostCreated',
     data: newPost,
   })
