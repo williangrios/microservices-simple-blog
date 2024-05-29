@@ -1,0 +1,27 @@
+# muito similar a criação de pod
+apiVersion: apps/v1
+# tipo do objeto
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  # replicas é o numero de pods que eu quero criar
+  # que irá rodar uma imagem
+  replicas: 1
+  # procure todos os pods com o label posts
+  selector:
+    matchLabels:
+      app: posts
+  # template é onde nos especificamos a exata
+  # especificação de um pod
+  template:
+    metadata:
+      labels:
+        app: posts
+    # descrevendo a especificação ou opções de configuração
+    # do pod que queremos criar
+    spec:
+      containers:
+        - name: posts
+          image: williangrios/posts:latest
+          # image: williangrios/posts
