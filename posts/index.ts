@@ -29,7 +29,7 @@ app.post('/posts', async (req: Request, res: Response) => {
   }
   posts.push(newPost)
   // post to event bus
-  await axios.post('http://localhost:4005/events', {
+  await axios.post('http://event-bus-srv:4005/events', {
     type: 'PostCreated',
     data: newPost,
   })
@@ -40,5 +40,6 @@ app.post('/events', async (req: Request, res: Response) => {})
 
 const PORT = 4000
 app.listen(PORT, () => {
-  console.log('Post Service runnning on port ', PORT)
+  console.log('v3.0.0')
+  console.log('Post Service runnning on port ', PORT, ' at ', new Date())
 })

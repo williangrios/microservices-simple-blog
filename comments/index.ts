@@ -36,30 +36,24 @@ app.post('/posts/:id/comments', async (req: Request, res: Response) => {
   }
   comments.push(newComment)
   // post to event bus
-  await axios.post('http://localhost:4005/events', {
+  await axios.post('http://event-bus-srv:4005/events', {
     type: 'CommentCreated',
     data: newComment,
   })
-  console.log('vai enviar isso //////////', newComment)
-
   res.status(201).send(newComment)
 })
 
 app.post('/events', async (req: Request, res: Response) => {
   const { type, data } = req.body
   if (type === 'CommentModerated') {
-    console.log('data----', data)
-
     const { commentId, status, content } = data
-    console.log('chegou isso no comment-0---', data)
-
     const commentSelected = comments.find(
       (item) => item.commentId === commentId
     )
     if (commentSelected) {
       commentSelected.status = status
     }
-    await axios.post('http://localhost:4005/events', {
+    await axios.post('http://event-bus-srv:4005/events', {
       type: 'CommentUpdated',
       data: {
         commentId,
