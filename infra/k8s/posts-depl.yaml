@@ -23,5 +23,22 @@ spec:
     spec:
       containers:
         - name: posts
-          image: williangrios/posts:latest
+          image: williangrios/posts
           # image: williangrios/posts
+# nova configuração para criar o novo Cluster IP Serviec
+# o --- é para griar multiplos objetos dentro do mesmo yaml file
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  # vamos configurar o selector que vai dizer ao serviço qual POD será acessado
+  selector:
+    app: posts
+  # type: ClusterIP
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

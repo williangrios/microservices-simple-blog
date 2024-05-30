@@ -14,4 +14,21 @@ spec:
     spec:
       containers:
         - name: event-bus
-          image: williangrios/event-bus:latest
+          image: williangrios/event-bus
+# nova configuração para criar o novo Cluster IP Serviec
+# o --- é para griar multiplos objetos dentro do mesmo yaml file
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-srv
+spec:
+  # vamos configurar o selector que vai dizer ao serviço qual POD será acessado
+  selector:
+    app: event-bus
+  # type: ClusterIP
+  ports:
+    - name: event-bus
+      protocol: TCP
+      port: 4005
+      targetPort: 4005
