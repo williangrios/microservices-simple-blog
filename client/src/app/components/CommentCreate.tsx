@@ -18,10 +18,7 @@ function CommentCreate({ postId }: CommentCreateProps) {
       body: JSON.stringify({ content }),
       // cache: cache === 'no-cache' && method === 'GET' ? 'no-cache' : undefined
     }
-    await fetch(
-      `http://localhost:4001/posts/${postId}/comments`,
-      requestOptions
-    )
+    await fetch(`http://posts.com/posts/${postId}/comments`, requestOptions)
     setContent('')
   }
   return (

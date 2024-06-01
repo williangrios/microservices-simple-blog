@@ -8,7 +8,7 @@ function PostList() {
   const [posts, setPosts] = useState<PostProps[]>([])
 
   const fetchPosts = async () => {
-    const response = await fetch('http://localhost:4002/posts')
+    const response = await fetch('http://posts.com/posts')
     const data = await response.json()
     setPosts(data)
   }

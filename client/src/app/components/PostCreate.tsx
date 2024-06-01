@@ -13,7 +13,7 @@ function PostCreate() {
       },
       body: JSON.stringify({ title }),
     }
-    await fetch('http://localhost:4000/posts', requestOptions)
+    await fetch('http://posts.com/posts/create', requestOptions)
     setTitle('')
   }
 
