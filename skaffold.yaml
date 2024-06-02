@@ -1,0 +1,77 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+      # aqui esta dizendo ao scaffold que temos uma coleção de different config files
+      # estamos dizendo ao scaffold para observar estes yaml arquivos
+      # se fizermos uma mudança neles, scaffold vai automaticamente reapply o config file
+      # para nosso kubernetes cluster
+      # ou seja, faz 3 coisas
+      # 1- quando damos um start no scaffold, vai dar um apply nestes arquivos
+      # 2- quando fazemos mudança nos arquivos, vai dar um apply
+      # 3- quando paramos o scaffold, vai encontrar todos os objetos relacionados a estes config files e deleta-los
+      # não deleta os arquivos, apenas os objetos relacionados a eles dentro do kubernetes cluster
+build:
+  local:
+    # a linha abaixo está desabilitando o push automatico para o docker hub (que padrão true)
+    push:
+      false
+      # a seção artifacts esta dizendo ao skaffold sobre algo dentro do nosso projeto que ele precisa manter
+      # Basicamente, estamos dizendo que haverá algum pod executando código fora do diretório
+      # client (frontend) dentro do nosso projeto
+      # quando houver mudanças dentro deste diretório, scaffold vai tentar pegar estas mudanças e atualizar o POD
+      # há duas formas que o scaffold vai tentar atualizar nosso POD
+      # 1º quando fazemos mudanças no JS file como indicado pelo matcher abaixo, o scaffold vai pegar o arquivo e
+      # colocar no POD (pega copia do arquivo e coloca no POD).
+      # 2º se mudar algum outro arquivo (que nao for JS) o scaffols vai tentar rebuildar toda a imagem
+  artifacts:
+    - image: williangrios/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: williangrios/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: williangrios/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: williangrios/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: williangrios/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: williangrios/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
